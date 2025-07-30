@@ -11,13 +11,11 @@ services:
     ports:
       - "${PORT:-8004}:8004"
     volumes:
-      # Mount local config file for persistence (create config.yaml first if it doesn't exist)
-      - ./config.yaml:/app/config.yaml
-      # Mount local directories for persistent app data
-      - ./voices:/app/voices
-      - ./reference_audio:/app/reference_audio
-      - ./outputs:/app/outputs
-      - ./logs:/app/logs
+      # Mount local directories for persistent app data (create them if they don't exist)
+      - voices:/app/voices
+      - reference_audio:/app/reference_audio
+      - outputs:/app/outputs
+      - logs:/app/logs
       # Named volume for Hugging Face model cache to persist across container rebuilds
       - hf_cache:/app/hf_cache
     restart: unless-stopped
@@ -43,6 +41,10 @@ services:
     # Method 2: Legacy Docker Compose (for older setups)
     # runtime: nvidia
 
-# Define the named volume for the Hugging Face cache
+# Define named volumes for persistent data
 volumes:
   hf_cache:
+  voices:
+  reference_audio:
+  outputs:
+  logs:
